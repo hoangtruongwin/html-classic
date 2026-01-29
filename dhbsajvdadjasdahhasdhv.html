@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLB Nghệ Thuật - THPT Nguyễn Huệ</title>
+    <style>
+        /* --- CẤU HÌNH GIAO DIỆN LIGHT MODE (Đã sửa) --- */
+        :root {
+            --primary: #c92a2a;      /* Màu đỏ trầm hơn để nổi trên nền trắng */
+            --accent: #f8f9fa;       /* Màu nền phụ (xám rất nhạt) */
+            --bg-body: #ffffff;      /* Nền trắng tinh */
+            --card-bg: #ffffff;      /* Nền thẻ trắng */
+            --text-heading: #111;    /* Màu tiêu đề đen */
+            --text-body: #444;       /* Màu chữ nội dung xám đen */
+            --font-main: 'Segoe UI', sans-serif;
+            --shadow-card: 0 5px 15px rgba(0,0,0,0.08); /* Đổ bóng nhẹ */
+        }
+
+        /* --- RESET & GLOBAL --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-body);
+            color: var(--text-body);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; transition: 0.3s; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER & LOGO --- */
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95); /* Kính mờ màu trắng */
+            backdrop-filter: blur(10px); 
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05); /* Viền mờ */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 50px; 
+            width: auto;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-heading); /* Chữ logo màu đen */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.2;
+        }
+
+        .nav-menu a {
+            margin-left: 30px;
+            font-size: 0.95rem;
+            color: var(--text-heading); /* Menu màu đen */
+            font-weight: 600;
+        }
+        .nav-menu a:hover, .nav-menu a.active { color: var(--primary); }
+
+        /* --- HERO SECTION (Banner chính) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            /* Ảnh nền vẫn tối để chữ trắng nổi bật */
+            background: linear-gradient(to right, rgba(0,0,0,0.8), rgba(0,0,0,0.2)), url('https://picsum.photos/1920/1080?random=music_stage');
+            background-size: cover;
+            background-position: center;
+            padding: 0 10%;
+            color: #fff; /* Chữ trên banner giữ màu trắng */
+        }
+
+        .hero-content {
+            max-width: 600px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            font-weight: 800;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .hero h1 span { color: #ff6b6b; /* Đỏ sáng trên nền tối */ }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #f1f1f1;
+            font-weight: 500;
+        }
+
+        .btn {
+            padding: 12px 35px;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 30px;
+            font-weight: 600;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(201, 42, 42, 0.4);
+        }
+        .btn:hover { transform: translateY(-3px); background: #a61e1e; }
+
+        /* --- CHUNG CHO CÁC SECTION --- */
+        section { padding: 80px 10%; }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--text-heading);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .section-header .divider {
+            height: 4px; width: 60px;
+            background: var(--primary);
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* --- INTRO SECTION --- */
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .intro-text p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .intro-img img {
+            width: 100%;
+            border-radius: 20px;
+            /* Đổ bóng dạng khối màu xám nhạt */
+            box-shadow: 20px 20px 0px var(--accent); 
+        }
+
+        /* --- FEATURES/ACTIVITIES (Nền xám nhạt) --- */
+        #activities {
+            background-color: var(--accent); /* Nền xám nhạt */
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 15px;
+            transition: 0.3s;
+            border: 1px solid #eee; /* Viền mờ thay vì border tối */
+            box-shadow: var(--shadow-card);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: inline-block;
+            background: #fff5f5; /* Nền đỏ rất nhạt sau icon */
+            width: 80px; height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+        }
+
+        .feature-card h3 {
+            color: var(--text-heading);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        /* --- GALLERY --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 250px);
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Item đầu tiên to hơn */
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .gallery-item img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-item:hover img { transform: scale(1.1); }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center;
+            padding: 50px 20px;
+            background: #212529; /* Giữ footer tối màu cho chuyên nghiệp */
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header { padding: 15px 20px; }
+            .hero h1 { font-size: 2.5rem; }
+            .intro-grid { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .gallery-item { height: 300px; } /* Chiều cao cố định cho ảnh mobile */
+            .nav-menu { display: none; } 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="logo.jpg" alt="Logo CLB" class="logo-img"> 
+            
+            <div class="logo-text">NGUYỄN HUỆ<br><span style="color:var(--primary); font-size: 0.8em;">ART CLUB</span></div>
+        </div>
+        <nav class="nav-menu">
+            <a href="#" class="active">Trang Chủ</a>
+            <a href="#about">Giới Thiệu</a>
+            <a href="#activities">Hoạt Động</a>
+            <a href="#gallery">Thư Viện</a>
+            <a href="#contact">Liên Hệ</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Đánh Thức <br><span>Đam Mê Nghệ Thuật</span></h1>
+            <p>Điểm đến lý tưởng cho những học sinh Trường THPT Nguyễn Huệ yêu thích và đam mê nghệ thuật. Nơi bản sắc riêng được khẳng định.</p>
+            <a href="#about" class="btn">Tìm Hiểu Thêm</a>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-header">
+            <h2>Lĩnh Vực Âm Nhạc</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="intro-grid">
+            <div class="intro-text">
+                <p style="font-size: 1.3rem; color: var(--primary); font-weight: 600; margin-bottom: 20px; font-style: italic;">
+                    "Âm nhạc không chỉ là phương tiện giải trí mà còn là cầu nối cảm xúc..."
+                </p>
+                <p>
+                    Thông qua các hoạt động âm nhạc, học sinh Trường THPT Nguyễn Huệ có cơ hội nuôi dưỡng tâm hồn, rèn luyện sự tự tin, khả năng làm việc nhóm và tinh thần trách nhiệm trong tập thể. Đây chính là nền tảng để phát triển toàn diện cả về trí tuệ lẫn tinh thần.
+                </p>
+                <br>
+                <p><strong>Sứ mệnh:</strong> Tạo ra không gian sáng tạo, nơi mỗi học sinh có thể tự tin thể hiện bản thân và lan tỏa những giá trị tích cực thông qua giai điệu và âm thanh.</p>
+            </div>
+            <div class="intro-img">
+                <img src="https://scontent.fhan5-5.fna.fbcdn.net/v/t39.30808-6/486553018_1179531853958668_7390876335527915014_n.jpg?stp=dst-jpg_s590x590_tt6&_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=SyGFNIWZkFgQ7kNvwEASjQ6&_nc_oc=AdndpGtlU6ntQMezLIClRV2F8uavXm5SC9kkIH5yUkHVX2SL8Kf4itgv2YPRS7guOQpX8p17yWmtFvpvxyCttt4g&_nc_zt=23&_nc_ht=scontent.fhan5-5.fna&_nc_gid=5oWIrQXM5FzV2FNDrPB2zA&oh=00_Afpo4_sEChccocfTvbJaG43UxIzW0wBZgk8nh5pyH-UsdA&oe=69814792" alt="Hoạt động âm nhạc">
+            </div>
+        </div>
+    </section>
+
+    <section id="activities">
+        <div class="section-header">
+            <h2>Nội Dung Hoạt Động</h2>
+            <div class="divider"></div>
+            <p style="margin-top: 15px; color: #666;">Tổ chức đa dạng các hoạt động nhằm đáp ứng nhu cầu và năng lực của từng thành viên.</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎤</div>
+                <h3>Biểu Diễn</h3>
+                <p>Tổ chức tập luyện và biểu diễn các tiết mục ca khúc đơn ca, song ca và hợp ca chất lượng cao.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎸</div>
+                <h3>Nhạc Cụ</h3>
+                <p>Thực hành và biểu diễn các loại nhạc cụ phổ biến (Guitar, Piano, Trống...) trong các sự kiện.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">🎉</div>
+                <h3>Sự Kiện</h3>
+                <p>Tham gia nòng cốt trong các chương trình văn nghệ, hội thi và sự kiện lớn nhỏ của nhà trường.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="section-header">
+            <h2>Khoảnh Khắc Đáng Nhớ</h2>
+            <div class="divider"></div>
+        </div>
+        
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://scontent.fhan5-7.fna.fbcdn.net/v/t39.30808-6/601849839_872028435762945_3737567811325270732_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=6sdwBzl6aBYQ7kNvwFFP_ne&_nc_oc=AdmjtXqTW01c5Pzzgxp4IrKam_sJtERM7fMSAi5fhj6MKQfifAWNa9uPhwuwjtH_XH2guNZC7ot1z8rbG4li4yNz&_nc_zt=23&_nc_ht=scontent.fhan5-7.fna&_nc_gid=MNV_5wgO65UxHCuMOa4E7A&oh=00_AfrVbe-EdRnBg9lM3Ygji83m16BO8Ac-3k854P2v3rZGuQ&oe=69814881" alt="Ảnh hoạt động lớn">
+            </div>
+            <div class="gallery-item">
+                <img src="https://scontent.fhan5-3.fna.fbcdn.net/v/t39.30808-6/585445549_851251461173976_3290941419078722007_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=833d8c&_nc_ohc=foZzq2l-WAUQ7kNvwFHN_lX&_nc_oc=AdldyqAjsPVjFeNTVexxVCG2gERKiyjk4YziUa41zuL_EdWNb5RtsJieIHE2UUy5lDNwVs1keYDdNBgJjdOiAV_E&_nc_zt=23&_nc_ht=scontent.fhan5-3.fna&_nc_gid=QNqWdXSC6T28m_DUSK1j7w&oh=00_AfrxY4reGpa5q90PzdOF-h0wfSWONDt1t-dtI7XHnBcqcA&oe=69815519" alt="Ảnh nhỏ 1">
+            </div>
+            <div class="gallery-item">
+                <img src="https://scontent.fhan5-7.fna.fbcdn.net/v/t39.30808-6/585562329_851251644507291_9209095424743829328_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=lh1oS2NBxywQ7kNvwFkXha4&_nc_oc=Adk7dyD9K4FZvlIBdBDpCLJyykwKJIKdiaQyOyUwNd-N-Q3eLp7wjrjoZgTUyEPIxO_CIDXTGhK2DVpkbsrTlKjt&_nc_zt=23&_nc_ht=scontent.fhan5-7.fna&_nc_gid=LpZlDR1X11rEKehtBLfuhA&oh=00_AfqEpqf7aZfa6_jRrTa0GqXs60DzwdrCrnPaDq2T_bOfBw&oe=69813657" alt="Ảnh nhỏ 2">
+            </div>
+            <div class="gallery-item">
+                <img src="https://scontent.fhan5-3.fna.fbcdn.net/v/t39.30808-6/585079509_851251621173960_4663187277885999948_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=833d8c&_nc_ohc=1UQCExSsN4wQ7kNvwGMEe08&_nc_oc=Admw5oECe-pe6KIJwVM_pAJ9bHTC3gCvFn9FuxvfD-3AYP3Z-GYyN3OCCZS-oFMzfhyrBig7noKuL2JaotHoGcgs&_nc_zt=23&_nc_ht=scontent.fhan5-3.fna&_nc_gid=hqS2-eAUwfl0X9OZWIGvMw&oh=00_AfqbE96fLIDRaxfQ25nZ7YGKFkDa6znzA9Y7r5LQlBTRrw&oe=69813D77" alt="Ảnh nhỏ 3">
+            </div>
+            <div class="gallery-item">
+                <img src="https://scontent.fhan5-5.fna.fbcdn.net/v/t39.30808-6/586543744_851251707840618_1149280868419670469_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=833d8c&_nc_ohc=CyKTAG70kJAQ7kNvwGtAhCk&_nc_oc=AdlXjb2817zL7bgGUZe5fkkmCtU0arqemM159rMlyvbDsvUaISpZinNXzOTPQTsCI1aFdAhm67Zmr2dtdXaTWNca&_nc_zt=23&_nc_ht=scontent.fhan5-5.fna&_nc_gid=c6DL8SPs0edvyyhQcBPcBA&oh=00_AfqSFyCqr9bpnY9uyh-CqZmVXzW3rAe_QOVAlis2tUjN-g&oe=69814CB6" alt="Ảnh nhỏ 4">
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <h3 style="color: #fff; margin-bottom: 10px;">CLB Nghệ Thuật THPT Nguyễn Huệ</h3>
+        <p>Lan tỏa giá trị tích cực thông qua giai điệu và âm thanh.</p>
+        <br>
+        <p style="color: #888;">&copy; 2024 Design for Nguyen Hue Art Club.</p>
+    </footer>
+
+</body>
+</html>
